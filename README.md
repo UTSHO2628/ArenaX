@@ -1,2 +1,2 @@
 # ArenaX
-Robotics & Hackathon Tournament Manager
+Robotics & Hackathon Tournament Manager.
