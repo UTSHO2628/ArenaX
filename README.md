@@ -16,3 +16,10 @@ Scoring System: Real‑time score tracking with customizable scoring logic.
 Leaderboard: Auto‑generated rankings and statistics.
 
 Export & Reports: Generate event summaries, score sheets, and analytics.
+
+Tech Stack
+Frontend: React / Next.js
+
+Backend: Node.js / Express
+
+Database: MongoDB / PostgreSQL
