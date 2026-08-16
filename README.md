@@ -6,9 +6,7 @@ ArenaX is a lightweight and powerful tournament management system designed for r
 Features-
 
 Tournament Creation: Easily set up robotics or hackathon events with custom rules.
-
 Team & Participant Management: Register, edit, and organize teams with detailed profiles.
-
 Arena Control: Manage match schedules, arena assignments, and competition flow.
 
 Scoring System: Real‑time score tracking with customizable scoring logic.
