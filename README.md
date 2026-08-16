@@ -17,7 +17,7 @@ Frontend: React / Next.js
 Backend: Node.js / Express
 Database: MongoDB / PostgreSQL
 
-⚡ Usage
+⚡ Usage-
 Create a new tournament from the dashboard.
 Add teams and participants.
 Configure scoring rules and arena settings.
