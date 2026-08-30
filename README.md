@@ -24,6 +24,5 @@ Configure scoring rules and arena settings.
 Start matches and track scores in real time.
 View the leaderboard and export results.
 
-🤝 Contributing-
-Contributions are welcome! Please fork the repository and submit a pull request.
+🤝 
 
