@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Leaderboard | ArenaX</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="brand">Arena<span>X</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="leaderboard.html" class="active">Leaderboard</a></li>
+        <li><a href="register.html">Register Team</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="flex justify-between align-center mb-2 mt-2" style="flex-wrap: wrap; gap: 1rem;">
+      <h2>Live Leaderboard</h2>
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <label for="segmentFilter" class="text-muted">Segment:</label>
+        <select id="segmentFilter" class="form-control" style="width: auto; min-width: 200px;">
+          <option value="">Loading...</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table id="leaderboardTable">
+        <thead>
+          <tr>
+            <th style="width: 80px;">Rank</th>
+            <th>Team Name</th>
+            <th>Stage/Round</th>
+            <th style="text-align: right;">Score</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboardBody">
+          <tr>
+            <td colspan="4" class="text-center text-muted">Select a segment to view live scores.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script type="module" src="js/leaderboard.js"></script>
+</body>
+</html>

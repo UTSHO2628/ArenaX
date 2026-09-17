@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Segments | Admin | ArenaX</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="brand">Arena<span>X</span> <span style="font-size: 0.8rem; color: #ef4444; margin-left: 0.5rem; border: 1px solid #ef4444; padding: 2px 6px; border-radius: 4px;">ADMIN</span></div>
+      <ul class="nav-links">
+        <li><a href="index.html">Dashboard</a></li>
+        <li><a href="segments.html" class="active">Segments</a></li>
+        <li><a href="teams.html">Teams</a></li>
+        <li><a href="scores.html">Scores</a></li>
+        <li><a href="#" id="logoutBtn" style="color: var(--danger-color);">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="flex justify-between align-center mb-2">
+      <h2>Manage Segments</h2>
+    </div>
+
+    <div class="dashboard-grid">
+      <!-- Create/Edit Form -->
+      <div class="card" style="grid-column: span 1; height: fit-content;">
+        <h3 id="formTitle">Create New Segment</h3>
+        <div id="formAlert" class="alert"></div>
+        <form id="segmentForm">
+          <input type="hidden" id="segmentId">
+          <div class="form-group">
+            <label for="name">Segment Name</label>
+            <input type="text" id="name" class="form-control" required placeholder="e.g. Line Follower Robot">
+          </div>
+          <div class="form-group">
+            <label for="code">Short Code</label>
+            <input type="text" id="code" class="form-control" required placeholder="e.g. LFR">
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" class="form-control" rows="3" placeholder="Rules or short info..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" class="form-control">
+              <option value="upcoming">Upcoming</option>
+              <option value="live">Live</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+          <div class="flex gap-1">
+            <button type="submit" class="btn btn-primary" style="flex: 1;" id="submitBtn">Save Segment</button>
+            <button type="button" class="btn btn-secondary" id="cancelBtn" style="display: none;">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Segments List -->
+      <div class="card" style="grid-column: span 2;">
+        <h3>All Segments</h3>
+        <div class="table-container mt-1">
+          <table id="segmentsTable">
+            <thead>
+              <tr>
+                <th>Name (Code)</th>
+                <th>Status</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="segmentsBody">
+              <tr><td colspan="3" class="text-center text-muted">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="../js/auth.js"></script>
+  <script type="module" src="../js/admin/segments.js"></script>
+</body>
+</html>

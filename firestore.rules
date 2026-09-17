@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == "PUT_ADMIN_UID_HERE";
+    }
+
+    match /segments/{segmentId} {
+      allow read: if true;              // public home/leaderboard pages need this
+      allow write: if isAdmin();
+    }
+
+    match /teams/{teamId} {
+      allow read: if true;              // leaderboard needs team names
+      allow create: if request.resource.data.members.size() >= 4
+                    && request.resource.data.status == "pending";   // no login required to register,
+                                                                     // but status must start as "pending"
+                                                                     // so only admin can approve it later
+      allow update, delete: if isAdmin();
+    }
+
+    match /scores/{scoreId} {
+      allow read: if true;              // public live leaderboard
+      allow write: if isAdmin();
+    }
+  }
+}

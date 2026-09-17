@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Scores | Admin | ArenaX</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="brand">Arena<span>X</span> <span style="font-size: 0.8rem; color: #ef4444; margin-left: 0.5rem; border: 1px solid #ef4444; padding: 2px 6px; border-radius: 4px;">ADMIN</span></div>
+      <ul class="nav-links">
+        <li><a href="index.html">Dashboard</a></li>
+        <li><a href="segments.html">Segments</a></li>
+        <li><a href="teams.html">Teams</a></li>
+        <li><a href="scores.html" class="active">Scores</a></li>
+        <li><a href="#" id="logoutBtn" style="color: var(--danger-color);">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container" style="max-width: 600px;">
+    <h2 class="mb-2 text-center">Update Scores</h2>
+    
+    <div id="formAlert" class="alert"></div>
+
+    <div class="card">
+      <form id="scoreForm">
+        <div class="form-group">
+          <label for="segmentSelect">Select Segment</label>
+          <select id="segmentSelect" class="form-control" required>
+            <option value="">Loading segments...</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="teamSelect">Select Team</label>
+          <select id="teamSelect" class="form-control" required disabled>
+            <option value="">Select a segment first</option>
+          </select>
+        </div>
+
+        <div class="flex gap-1">
+          <div class="form-group" style="flex: 1;">
+            <label for="score">Score</label>
+            <input type="number" id="score" class="form-control" required placeholder="0" step="any">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="stage">Stage/Round</label>
+            <input type="text" id="stage" class="form-control" placeholder="e.g. Final, Q1">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="submitBtn">Update Score</button>
+      </form>
+    </div>
+    <p class="text-center text-muted mt-2" style="font-size: 0.85rem;">Scores saved here immediately reflect on the public live leaderboard.</p>
+  </main>
+
+  <script type="module" src="../js/auth.js"></script>
+  <script type="module" src="../js/admin/scores.js"></script>
+</body>
+</html>

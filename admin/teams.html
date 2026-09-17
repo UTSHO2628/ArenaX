@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Teams | Admin | ArenaX</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="brand">Arena<span>X</span> <span style="font-size: 0.8rem; color: #ef4444; margin-left: 0.5rem; border: 1px solid #ef4444; padding: 2px 6px; border-radius: 4px;">ADMIN</span></div>
+      <ul class="nav-links">
+        <li><a href="index.html">Dashboard</a></li>
+        <li><a href="segments.html">Segments</a></li>
+        <li><a href="teams.html" class="active">Teams</a></li>
+        <li><a href="scores.html">Scores</a></li>
+        <li><a href="#" id="logoutBtn" style="color: var(--danger-color);">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="flex justify-between align-center mb-2" style="flex-wrap: wrap; gap: 1rem;">
+      <h2>Review Teams</h2>
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <label for="segmentFilter" class="text-muted">Filter by Segment:</label>
+        <select id="segmentFilter" class="form-control" style="width: auto; min-width: 200px;">
+          <option value="all">All Segments</option>
+        </select>
+      </div>
+    </div>
+    
+    <div id="actionAlert" class="alert"></div>
+
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <div class="table-container" style="border: none;">
+        <table id="teamsTable">
+          <thead>
+            <tr>
+              <th>Team Name</th>
+              <th>Contact</th>
+              <th>Members</th>
+              <th>Status</th>
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="teamsBody">
+            <tr><td colspan="5" class="text-center text-muted">Loading teams...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="../js/auth.js"></script>
+  <script type="module" src="../js/admin/teams.js"></script>
+</body>
+</html>

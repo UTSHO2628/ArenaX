@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArenaX | Robotics Tournament Manager</title>
+  <meta name="description" content="Public leaderboard and registration for ArenaX robotics tournaments.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="brand">Arena<span>X</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+        <li><a href="register.html">Register Team</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="card text-center" style="padding: 4rem 2rem; margin-top: 2rem; background: linear-gradient(to bottom right, rgba(30,41,59,0.8), rgba(15,23,42,1));">
+      <h1 style="font-size: 3.5rem; margin-bottom: 1rem;">Welcome to <span style="color: var(--primary-color);">ArenaX</span></h1>
+      <p style="font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 2rem;">
+        The premier platform for university robotics tournaments. Register your team and track live scores.
+      </p>
+      <div class="flex justify-center gap-1" style="justify-content: center; flex-wrap: wrap;">
+        <a href="register.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">Register a Team</a>
+        <a href="leaderboard.html" class="btn btn-secondary" style="font-size: 1.1rem; padding: 1rem 2rem;">View Live Leaderboard</a>
+      </div>
+    </div>
+    
+    <div style="margin-top: 4rem;">
+      <h2 class="text-center">Upcoming & Live Segments</h2>
+      <div id="segmentsList" class="dashboard-grid mt-2">
+        <p class="text-center text-muted" style="grid-column: 1/-1;">Loading segments...</p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+    import { db } from "./js/firebase-config.js";
+
+    async function loadUpcomingSegments() {
+      const container = document.getElementById('segmentsList');
+      try {
+        const q = query(collection(db, "segments"), where("status", "in", ["upcoming", "live"]));
+        const snap = await getDocs(q);
+        
+        if (snap.empty) {
+          container.innerHTML = `<p class="text-center" style="grid-column: 1/-1;">No upcoming segments at this time.</p>`;
+          return;
+        }
+
+        let html = '';
+        snap.forEach(doc => {
+          const s = doc.data();
+          html += `
+            <div class="stat-card">
+              <div class="flex justify-between align-center mb-1">
+                <h3 style="margin:0">${s.name}</h3>
+                <span class="badge badge-${s.status}">${s.status.toUpperCase()}</span>
+              </div>
+              <p class="text-muted" style="margin-bottom: 1rem; flex: 1;">${s.description || ''}</p>
+              <div style="margin-top: 1rem;">
+                <a href="register.html?segment=${doc.id}" class="btn btn-secondary" style="width: 100%; text-align: center;">Register</a>
+              </div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      } catch (err) {
+        console.error("Error loading segments:", err);
+        container.innerHTML = `<p class="text-center" style="grid-column: 1/-1; color: var(--danger-color);">Error loading segments from database. Check console.</p>`;
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadUpcomingSegments);
+  </script>
+</body>
+</html>

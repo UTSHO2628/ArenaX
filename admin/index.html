@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | ArenaX</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="brand">Arena<span>X</span> <span style="font-size: 0.8rem; color: #ef4444; margin-left: 0.5rem; border: 1px solid #ef4444; padding: 2px 6px; border-radius: 4px;">ADMIN</span></div>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Dashboard</a></li>
+        <li><a href="segments.html">Segments</a></li>
+        <li><a href="teams.html">Teams</a></li>
+        <li><a href="scores.html">Scores</a></li>
+        <li><a href="#" id="logoutBtn" style="color: var(--danger-color);">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2 class="mb-2">Admin Dashboard</h2>
+    
+    <div class="dashboard-grid">
+      <div class="stat-card">
+        <div class="stat-title">Total Segments</div>
+        <div class="stat-value" id="statSegments">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Pending Teams</div>
+        <div class="stat-value" id="statPendingTeams" style="color: #f59e0b;">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Approved Teams</div>
+        <div class="stat-value" id="statApprovedTeams" style="color: #10b981;">--</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Quick Actions</h3>
+      <div class="flex gap-1 mt-1 flex-wrap">
+        <a href="segments.html" class="btn btn-secondary">Manage Segments</a>
+        <a href="teams.html" class="btn btn-secondary">Review Pending Teams</a>
+        <a href="scores.html" class="btn btn-primary">Enter Scores</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Load Auth Protection -->
+  <script type="module">
+    import { requireAuth } from "../js/auth.js";
+    import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+    import { db } from "../js/firebase-config.js";
+
+    requireAuth();
+
+    async function loadStats() {
+      try {
+        // Segments count
+        const segmentsSnap = await getDocs(collection(db, "segments"));
+        document.getElementById('statSegments').textContent = segmentsSnap.size;
+
+        // Pending teams count
+        const pendingQ = query(collection(db, "teams"), where("status", "==", "pending"));
+        const pendingSnap = await getDocs(pendingQ);
+        document.getElementById('statPendingTeams').textContent = pendingSnap.size;
+
+        // Approved teams count
+        const approvedQ = query(collection(db, "teams"), where("status", "==", "approved"));
+        const approvedSnap = await getDocs(approvedQ);
+        document.getElementById('statApprovedTeams').textContent = approvedSnap.size;
+
+      } catch (error) {
+        console.error("Error loading stats:", error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadStats);
+  </script>
+</body>
+</html>

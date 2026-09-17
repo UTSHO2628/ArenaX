@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | ArenaX</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body style="justify-content: center;">
+  <main class="container" style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 0;">
+    <div class="card" style="width: 100%; max-width: 400px;">
+      <div class="text-center mb-2">
+        <a href="index.html" class="brand" style="justify-content: center; font-size: 2rem;">Arena<span>X</span></a>
+        <p class="text-muted mt-1">Admin Portal Login</p>
+      </div>
+
+      <div id="errorAlert" class="alert alert-error"></div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" class="form-control" required placeholder="admin@arenax.test">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" class="form-control" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+      </form>
+      
+      <div class="text-center mt-2">
+        <a href="index.html" style="font-size: 0.9rem;">&larr; Back to Public Site</a>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+    import { auth } from "./js/firebase-config.js";
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorAlert = document.getElementById('errorAlert');
+
+      try {
+        errorAlert.classList.remove('show');
+        await signInWithEmailAndPassword(auth, email, password);
+        // Successful login, redirect to admin dashboard
+        window.location.href = 'admin/index.html';
+      } catch (error) {
+        console.error("Login error", error);
+        errorAlert.textContent = "Invalid email or password.";
+        errorAlert.classList.add('show');
+      }
+    });
+  </script>
+</body>
+</html>
