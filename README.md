@@ -69,3 +69,4 @@ ArenaX is a production-quality static web application for managing robotics tour
 - **Live Data**: The leaderboard updates instantly using Firestore's real-time listeners.
 - **Responsive & Modern Design**: Uses a mobile-first, flex/grid CSS approach with modern aesthetics and smooth interactions.
 "# ArenaX" 
+"# ArenaX" 
