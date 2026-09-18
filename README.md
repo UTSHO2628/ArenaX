@@ -1,72 +1,129 @@
-# ArenaX Tournament Manager
+# 🤖 ArenaX — Robotics Tournament Manager
 
-ArenaX is a production-quality static web application for managing robotics tournaments (e.g., Line Follower Robot, Sumo Bot). It features public team registration, real-time live leaderboards, and an admin dashboard for tournament management.
+**A web-based platform to manage multi-segment robotics tournaments with live, real-time scoring.**
 
-## Tech Stack
-- **Frontend**: Vanilla HTML5, CSS3, and JavaScript (ES Modules). No build step required.
-- **Database**: Firebase Cloud Firestore (NoSQL, real-time sync).
-- **Authentication**: Firebase Authentication (Email/Password) for a single admin account.
-- **Hosting**: Designed to be hosted purely as a static site on GitHub Pages.
+🔗 **Live Demo:** [utsho2628.github.io/ArenaX](https://utsho2628.github.io/ArenaX/)
 
-## Architecture & Design Decisions
-1. **No Backend / Static Deployment**: GitHub Pages only serves static files. The application interacts directly with Firebase Cloud Firestore over HTTPS from the client side using the Firebase JS SDK (loaded via CDN).
-2. **Single Admin Role**: There are no participant accounts. Anyone can register a team and view the leaderboard. An admin logs in via Firebase Auth to manage segments, teams, and scores. This simplifies the user model significantly while meeting all requirements.
-3. **Real-time Leaderboard**: The leaderboard utilizes Firestore's `onSnapshot` listener to automatically update rankings instantly when the admin updates a score—without needing a page refresh.
-4. **Security Rules**: Since Firebase Web API keys are public by design, security is entirely enforced on the backend via Firestore Security Rules (`firestore.rules`). These rules dictate what operations require the admin UID and what operations are public (like creating a team registration with a minimum of 4 members).
+---
 
-## Database Schema (Firestore)
+## 📖 About
 
-- **segments/{id}**
-  - `name` (string): e.g. "Line Follower Robot"
-  - `code` (string): e.g. "LFR"
-  - `description` (string)
-  - `status` (string): "upcoming" | "live" | "completed"
-  - `createdAt` (timestamp)
-  - `updatedAt` (timestamp)
+ArenaX is a lightweight tournament management system built for university and inter-university robotics competitions — Line Follower Robot (LFR), Sumo/Soccer Bot, Drone Race, Project Showcase, and any other segment an organizer wants to run.
 
-- **teams/{id}**
-  - `teamName` (string)
-  - `segmentId` (string): reference to segments
-  - `members` (array of objects): `{ name, institution, contact }`. Enforced >= 4.
-  - `contactEmail` (string)
-  - `status` (string): "pending" | "approved" | "rejected"
-  - `createdAt` (timestamp)
+Instead of tracking scores on paper or spreadsheets, ArenaX gives every competition a **public, real-time leaderboard**: the moment an organizer enters a score, it updates live on every viewer's screen — no refresh needed.
 
-- **scores/{id}**
-  - `teamId` (string): reference to teams
-  - `segmentId` (string): reference to segments
-  - `score` (number)
-  - `stage` (string): e.g., "Qualifier", "Final"
-  - `updatedAt` (timestamp)
+The project was built as a university software engineering project, with a strong requirement for a real, connected cloud database — satisfied here using **Cloud Firestore**.
 
-## Setup Instructions
+---
 
-### 1. Firebase Project Setup (One-Time)
-1. Go to the [Firebase Console](https://console.firebase.google.com/) and Create a Project (the free Spark plan is sufficient).
-2. Go to **Build → Authentication → Sign-in method** and enable **Email/Password**.
-3. Go to **Build → Authentication → Users tab** and manually add a user (this will be your one admin account). **Copy the User UID**.
-4. Go to **Build → Firestore Database** and click **Create database** (start in production mode).
-5. Go to the **Rules** tab in Firestore and replace the contents with the rules provided in `firestore.rules`.
-   - **IMPORTANT**: Replace `PUT_ADMIN_UID_HERE` in the rules with the UID you copied in Step 3. Click Publish.
+## ✨ Features
 
-### 2. Connect the Web App
-1. In the Firebase Console, go to **Project settings → General**.
-2. Scroll to **Your apps**, click **Add app**, and select **Web (</>)**.
-3. Copy the `firebaseConfig` object provided by Firebase.
-4. Open `js/firebase-config.js` in this repository and replace the placeholder configuration with your actual config. Note: It is completely safe and expected for these keys to be public in your client-side code.
+**For visitors / participants (no account needed):**
+- 📝 Register a team under any open segment (minimum 4 members required)
+- 🏆 View the live leaderboard, filterable by segment, updating in real time
+- ✅ Duplicate team-name protection within a segment
 
-### 3. Deployment to GitHub Pages
-1. Push this repository to GitHub.
-2. In your repository, go to **Settings → Pages**.
-3. Under **Build and deployment**, set the **Source** to **Deploy from a branch**.
-4. Select the `main` branch and `/ (root)` folder. Click Save.
-5. GitHub will deploy your site, and you can access it via the provided URL.
+**For the organizer (Admin, single account):**
+- 🔐 Secure email/password login
+- 🎯 Create, edit, and manage competition segments (`upcoming` / `live` / `completed`)
+- 👥 Review team registrations — approve or reject each one
+- 📊 Enter and update scores per team, per segment, with optional round/stage labels
 
-## Grading Requirements Met
-- **Real connected database**: Utilizes Firestore.
-- **Client-side functionality**: Vanilla JS handles all logic, form validation (enforcing 4+ members), and Firebase API calls.
-- **Role separation**: Implements a strict Admin vs. Public visitor model enforced via Firestore rules.
-- **Live Data**: The leaderboard updates instantly using Firestore's real-time listeners.
-- **Responsive & Modern Design**: Uses a mobile-first, flex/grid CSS approach with modern aesthetics and smooth interactions.
-"# ArenaX" 
-"# ArenaX" 
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | HTML5, CSS3, Vanilla JavaScript (ES Modules) — no framework, no build step |
+| Database | [Cloud Firestore](https://firebase.google.com/docs/firestore) (Firebase) |
+| Authentication | Firebase Authentication (Email/Password) |
+| Hosting | GitHub Pages (static hosting) |
+
+ArenaX is intentionally framework-free and build-tool-free: every page is a plain `.html` file that loads the Firebase SDK directly from Google's CDN, so it runs as-is on GitHub Pages with zero configuration.
+
+---
+
+## 📂 Project Structure
+
+```
+ArenaX/
+├── index.html              # Public homepage
+├── register.html           # Public team registration
+├── leaderboard.html        # Public live leaderboard
+├── login.html               # Admin login
+├── admin/
+│   ├── index.html           # Admin dashboard
+│   ├── segments.html         # Manage competition segments
+│   ├── teams.html            # Review & approve/reject teams
+│   └── scores.html           # Enter / update scores
+├── css/style.css
+├── js/
+│   ├── firebase-config.js
+│   ├── auth.js
+│   ├── register.js
+│   ├── leaderboard.js
+│   └── admin/
+│       ├── segments.js
+│       ├── teams.js
+│       └── scores.js
+└── firestore.rules          # Database security rules
+```
+
+---
+
+## 🗄️ Database Schema (Cloud Firestore)
+
+| Collection | Purpose | Key fields |
+|---|---|---|
+| `segments` | Each competition segment | `name`, `code`, `status`, `description` |
+| `teams` | Each team registration | `teamName`, `segmentId`, `members[]`, `status` |
+| `scores` | Each score entry | `segmentId`, `teamId`, `score`, `stage` |
+
+There is no `users` collection — ArenaX has exactly one privileged role (Admin), identified by a hardcoded UID in `firestore.rules` rather than a database lookup, keeping the access-control model as simple as possible.
+
+Access control is enforced entirely at the database level via **Firestore Security Rules** — not just hidden UI — so public visitors can read leaderboard data and submit registrations, but only the Admin account can approve teams, manage segments, or write scores.
+
+---
+
+## 🚀 How to Use
+
+### As a visitor
+1. Open the [live site](https://utsho2628.github.io/ArenaX/).
+2. Click **Register a Team**, pick a segment, fill in your team name and at least 4 members, and submit. Your registration goes in as `pending`.
+3. Once the organizer approves your team, check the **Leaderboard** page any time — scores update live as the tournament progresses.
+
+### As the Admin
+1. Go to `/login.html` and sign in with the admin account.
+2. **Segments** — create the competition segments for the tournament.
+3. **Teams** — review pending registrations and approve or reject them.
+4. **Scores** — select a segment and an approved team, enter the score, and save. The public leaderboard reflects it instantly.
+
+---
+
+## ⚙️ Running Your Own Copy
+
+1. Create a free [Firebase](https://console.firebase.google.com/) project.
+2. Enable **Authentication → Email/Password**, and manually create one admin user (Firebase does not offer public sign-up here by design).
+3. Enable **Firestore Database**, then publish the rules from `firestore.rules` — replacing the placeholder with your admin user's UID.
+4. Copy your Firebase Web config into `js/firebase-config.js`.
+5. Serve the folder with any static server (e.g. VS Code's Live Server) — opening `index.html` directly via `file://` will not work, since ES Modules require an HTTP origin.
+6. Deploy by pushing to GitHub and enabling **Pages** in the repository settings.
+
+---
+
+## 🔮 Future Improvements
+
+- Multiple judge/admin roles scoped to individual segments
+- Email notifications on approval/rejection and score updates
+- Exportable results/certificates (PDF)
+- Bracket-style elimination rounds
+- Support for multiple tournaments in one deployment
+
+---
+
+## 👤 Author
+
+**Utsho Kumar Dey**
+CSE, Northern University of Business and Technology, Khulna (NUBTK)
+[GitHub](https://github.com/UTSHO2628) · [LinkedIn](https://www.linkedin.com/in/utsho-kumar-dey-98bb04260/)
